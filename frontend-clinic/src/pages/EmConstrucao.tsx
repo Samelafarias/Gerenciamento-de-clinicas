@@ -40,7 +40,7 @@ const IconWrapper = styled.div`
 
 const Title = styled.h1`
   font-size: 28px;
-  color: #001f3f;
+  color: #004B87;
   margin-bottom: 12px;
   font-weight: 700;
 
@@ -68,7 +68,7 @@ const BackButton = styled.button`
   align-items: center;
   justify-content: center;
   gap: 10px;
-  background-color: #001f3f;
+  background-color: #004B87;
   color: white;
   border: none;
   padding: 12px 24px;
