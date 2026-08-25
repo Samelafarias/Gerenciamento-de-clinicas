@@ -1,4 +1,4 @@
-import usuarios from "../mocks/usuarios";
+import { usuarios } from "../mocks/usuarios";
 
 export interface Usuario {
   id: number;
