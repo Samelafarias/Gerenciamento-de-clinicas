@@ -1,0 +1,104 @@
+/* Estilização Global */
+:root {
+  --color-primary: #004b87;
+  --color-primary-dark: #003366;
+  --color-accent: #00a3ad;
+  --color-accent-dark: #00828a;
+}
+
+.bg-primary-custom { background-color: var(--color-primary) !important; }
+.text-primary-custom { color: var(--color-primary) !important; }
+
+/* Estilização dos botões e links do sistema*/
+.btn-primary-custom {
+  background-color: var(--color-primary);
+  color: #fff;
+  border: none;
+}
+.btn-primary-custom:hover {
+  background-color: var(--color-primary-dark);
+  color: #fff;
+}
+
+.link-accent {
+  color: var(--color-accent);
+  font-weight: 600;
+}
+.link-accent:hover { color: var(--color-accent-dark); }
+
+/* Estilização dos inputs da página de login */
+.input-bg-custom {
+  background-color: #e5e7eb;
+  border: none;
+}
+.input-bg-custom:focus {
+  background-color: #e2e8f0;
+  box-shadow: 0 0 0 2px var(--color-primary);
+}
+
+/* Estilização do componet NAVBAR */
+.avatar-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* Estilização do componet SIDEBAR */
+.sidebar-container {
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 260px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.main-content {
+  margin-left: 260px;
+  min-height: 100vh;
+}
+
+.sidebar-link {
+  color: var(--color-primary);
+  font-weight: 600;
+  font-size: 15px;
+  border-radius: 12px;
+}
+.sidebar-link.active {
+  background-color: #bce7ef;
+  color: var(--color-primary);
+}
+.sidebar-link:hover:not(.active) {
+  background-color: #f1f5f9;
+}
+
+/* Estilização do botão de SAIR  */
+.logout-link {
+  color: #dc2626;
+  font-weight: 600;
+  border-radius: 12px;
+}
+.logout-link:hover {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+/*Estilização do Dashboard*/
+.main-content {
+  width: 100%;             
+  margin-left: 0;          
+  padding: 1rem;          
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .main-content {
+    width: calc(100% - 250px); 
+    margin-left: 250px;        
+    padding: 1.5rem;          
+}
+}
