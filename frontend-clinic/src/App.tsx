@@ -4,6 +4,7 @@ import Login from './pages/Login';
 import MainLayout from "./components/Layout/mainlayout";
 import DashboardPage from './pages/Dashboard';
 import AgendamentosPage from './pages/Agendamentos';
+import HistoricoPacientesPage from './pages/HistoricoPacientes';
 import PrivateRoute from './routes/PrivateRoute';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
       <Route element={<MainLayout />}>
         <Route path="/dashboard" element={<PrivateRoute element={<DashboardPage />} />} />
         <Route path="/agendamentos" element={<PrivateRoute element={<AgendamentosPage />} />} />
+        <Route path="/historico-pacientes" element={<PrivateRoute element={<HistoricoPacientesPage />} />} />
       </Route>
     </Routes>
   );

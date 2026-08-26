@@ -217,3 +217,45 @@
   color: #64748b;
   border: 1px dashed #cbd5e1;
 }
+
+/*Estilização página de Histórico dos pacientes*/
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 75, 135, 0.03);
+  transition: background-color 0.2s ease-in-out;
+}
+
+.form-control:focus,
+.form-selct:focus {
+  border-color: #004b87;
+  box-shadow: 0 0 0 0.25rem rgba(0, 75, 135, 0.015);
+}
+
+@keyframes slideInRight {
+  form {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+.toast-notificacao {
+    animation: slideInRight 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+    z-index: 1090;
+    min-width: 320px;
+  }
+
+modal-body-scroll {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.modal-body-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-body-scroll::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 4px;
+}

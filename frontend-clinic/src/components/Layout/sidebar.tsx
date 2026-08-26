@@ -31,7 +31,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, onLogout }) => {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/historico" className={linkClass}>
+          <NavLink to="/historico-pacientes" className={linkClass}>
             <FiBookOpen size={20} />
             {!collapsed && <span>Histórico de pacientes</span>}
           </NavLink>
