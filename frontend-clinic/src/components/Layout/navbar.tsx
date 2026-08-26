@@ -1,195 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
-import styled from "styled-components";
 import { FiBell, FiMenu } from "react-icons/fi";
 import LogoImg from "../../assets/Logo.png";
 import { getUsuarioLogado } from "../../hooks/useAuth";
 import { getInitials } from "../../utils/getInitials";
 import notificacoesMock, { type Notificacao } from "../../mocks/notificacoes";
-
-const NavbarContainer = styled.nav`
-  height: 70px;
-  background-color: #ffffff;
-  border-bottom: 1px solid #e5e7eb;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 24px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-`;
-
-const LeftSection = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 16px;
-
-  img {
-    height: 40px;
-    object-fit: contain;
-  }
-`;
-
-const ToggleBtn = styled.button`
-  background: none;
-  border: none;
-  color: #004b87;
-  font-size: 24px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 4px;
-  border-radius: 6px;
-
-  &:hover {
-    background-color: #f1f5f9;
-  }
-`;
-
-const RightSection = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 20px;
-`;
-
-const NotificationWrapper = styled.div`
-  position: relative;
-`;
-
-const NotificationBtn = styled.button`
-  background: none;
-  border: none;
-  color: #004b87;
-  font-size: 22px;
-  cursor: pointer;
-  position: relative;
-
-  &:hover {
-    color: #003366;
-  }
-`;
-
-const Badge = styled.span`
-  position: absolute;
-  top: -4px;
-  right: -6px;
-  background-color: #dc2626;
-  color: #fff;
-  font-size: 10px;
-  font-weight: 700;
-  min-width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 3px;
-`;
-
-const NotificationPanel = styled.div`
-  position: absolute;
-  top: calc(100% + 12px);
-  right: 0;
-  width: 320px;
-  max-height: 380px;
-  overflow-y: auto;
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  border: 1px solid #e5e7eb;
-  z-index: 200;
-`;
-
-const PanelHeader = styled.div`
-  padding: 14px 16px;
-  font-weight: 700;
-  color: #003366;
-  border-bottom: 1px solid #e5e7eb;
-  font-size: 14px;
-`;
-
-const NotificationItem = styled.div<{ $lida: boolean }>`
-  padding: 12px 16px;
-  border-bottom: 1px solid #f1f5f9;
-  cursor: pointer;
-  background-color: ${(props) => (props.$lida ? "#ffffff" : "#f0f9ff")};
-
-  &:hover {
-    background-color: #f1f5f9;
-  }
-
-  &:last-child {
-    border-bottom: none;
-  }
-`;
-
-const NotifTitle = styled.p`
-  margin: 0;
-  font-size: 13.5px;
-  font-weight: 700;
-  color: #003366;
-`;
-
-const NotifMessage = styled.p`
-  margin: 4px 0 0 0;
-  font-size: 13px;
-  color: #475569;
-`;
-
-const NotifDate = styled.span`
-  font-size: 11px;
-  color: #94a3b8;
-`;
-
-const EmptyState = styled.div`
-  padding: 24px 16px;
-  text-align: center;
-  color: #94a3b8;
-  font-size: 13px;
-`;
-
-const UserSection = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-`;
-
-const UserInfo = styled.div`
-  display: none;
-  flex-direction: column;
-  line-height: 1.2;
-
-  @media (min-width: 768px) {
-    display: flex;
-  }
-`;
-
-const UserName = styled.span`
-  font-size: 13px;
-  font-weight: 700;
-  color: #003366;
-`;
-
-const UserRole = styled.span`
-  font-size: 11px;
-  color: #64748b;
-`;
-
-const UserAvatar = styled.div`
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #004b87;
-  color: #ffffff;
-  font-weight: 700;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  flex-shrink: 0;
-`;
 
 interface NavbarProps {
   onToggleSidebar: () => void;
@@ -204,74 +18,100 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
   const naoLidas = notificacoes.filter((n) => !n.lida).length;
 
   const marcarComoLida = (id: number) => {
-    setNotificacoes((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, lida: true } : n))
-    );
+    setNotificacoes((prev) => prev.map((n) => (n.id === id ? { ...n, lida: true } : n)));
   };
 
-  const togglePainel = () => setPainelAberto((prev) => !prev);
-
-  // Fecha o painel ao clicar fora dele
   useEffect(() => {
     function handleClickFora(event: MouseEvent) {
       if (painelRef.current && !painelRef.current.contains(event.target as Node)) {
         setPainelAberto(false);
       }
     }
-
     document.addEventListener("mousedown", handleClickFora);
     return () => document.removeEventListener("mousedown", handleClickFora);
   }, []);
 
   return (
-    <NavbarContainer className="shadow-sm">
-      <LeftSection>
-        <ToggleBtn onClick={onToggleSidebar} aria-label="Alternar Menu">
+    <nav
+      className="navbar bg-white border-bottom shadow-sm sticky-top px-3"
+      style={{ height: "70px", zIndex: 100 }}
+    >
+      <div className="d-flex align-items-center gap-3">
+        <button
+          onClick={onToggleSidebar}
+          aria-label="Alternar Menu"
+          className="btn text-primary-custom fs-4 p-1 border-0"
+        >
           <FiMenu />
-        </ToggleBtn>
-        <img src={LogoImg} alt="Logo Saúde" />
-      </LeftSection>
+        </button>
+        <img src={LogoImg} alt="Logo Saúde" style={{ height: "40px", objectFit: "contain" }} />
+      </div>
 
-      <RightSection>
-        <NotificationWrapper ref={painelRef}>
-          <NotificationBtn aria-label="Notificações" onClick={togglePainel}>
+      <div className="d-flex align-items-center gap-3 ms-auto">
+        <div className="position-relative" ref={painelRef}>
+          <button
+            aria-label="Notificações"
+            onClick={() => setPainelAberto((prev) => !prev)}
+            className="btn text-primary-custom fs-5 position-relative border-0"
+          >
             <FiBell />
-            {naoLidas > 0 && <Badge>{naoLidas}</Badge>}
-          </NotificationBtn>
+            {naoLidas > 0 && (
+              <span
+                className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                style={{ fontSize: "10px" }}
+              >
+                {naoLidas}
+              </span>
+            )}
+          </button>
 
           {painelAberto && (
-            <NotificationPanel>
-              <PanelHeader>Notificações</PanelHeader>
+            <div
+              className="position-absolute end-0 mt-2 bg-white border rounded-3 shadow-lg overflow-auto"
+              style={{ width: "320px", maxHeight: "380px", zIndex: 200 }}
+            >
+              <div className="px-3 py-2 fw-bold text-primary-custom border-bottom small">
+                Notificações
+              </div>
               {notificacoes.length === 0 ? (
-                <EmptyState>Nenhuma notificação por aqui.</EmptyState>
+                <div className="text-center text-secondary small py-4">
+                  Nenhuma notificação por aqui.
+                </div>
               ) : (
                 notificacoes.map((n) => (
-                  <NotificationItem
+                  <div
                     key={n.id}
-                    $lida={n.lida}
                     onClick={() => marcarComoLida(n.id)}
+                    className={`px-3 py-2 border-bottom small ${n.lida ? "bg-white" : "bg-info bg-opacity-10"}`}
+                    style={{ cursor: "pointer" }}
                   >
-                    <NotifTitle>{n.titulo}</NotifTitle>
-                    <NotifMessage>{n.mensagem}</NotifMessage>
-                    <NotifDate>{n.data}</NotifDate>
-                  </NotificationItem>
+                    <p className="fw-bold text-primary-custom mb-1">{n.titulo}</p>
+                    <p className="text-secondary mb-1">{n.mensagem}</p>
+                    <span className="text-muted" style={{ fontSize: "11px" }}>
+                      {n.data}
+                    </span>
+                  </div>
                 ))
               )}
-            </NotificationPanel>
+            </div>
           )}
-        </NotificationWrapper>
+        </div>
 
-        <UserSection>
-          <UserInfo>
-            <UserName>{usuario?.nome ?? "Usuário"}</UserName>
-            <UserRole>{usuario?.cargo ?? ""}</UserRole>
-          </UserInfo>
-          <UserAvatar title={usuario?.nome ?? "Usuário"}>
+        <div className="d-flex align-items-center gap-2">
+          <div className="d-none d-md-flex flex-column lh-sm">
+            <span className="fw-bold text-primary-custom" style={{ fontSize: "13px" }}>
+              {usuario?.nome ?? "Usuário"}
+            </span>
+            <span className="text-secondary" style={{ fontSize: "11px" }}>
+              {usuario?.cargo ?? ""}
+            </span>
+          </div>
+          <div className="avatar-circle d-flex align-items-center justify-content-center" title={usuario?.nome ?? "Usuário"}>
             {getInitials(usuario?.nome ?? "US")}
-          </UserAvatar>
-        </UserSection>
-      </RightSection>
-    </NavbarContainer>
+          </div>
+        </div>
+      </div>
+    </nav>
   );
 };
 

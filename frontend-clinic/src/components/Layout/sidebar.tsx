@@ -1,99 +1,6 @@
 import React from "react";
-import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { FiGrid, FiCalendar, FiBookOpen, FiUser, FiLogOut } from "react-icons/fi";
-
-interface SidebarContainerProps {
-  $collapsed: boolean;
-}
-
-const SidebarContainer = styled.aside<SidebarContainerProps>`
-  width: ${(props) => (props.$collapsed ? "80px" : "250px")};
-  min-height: calc(100vh - 70px);
-  background-color: #ffffff;
-  border-right: 1px solid #e5e7eb;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 20px 12px;
-  transition: width 0.3s ease;
-  box-sizing: border-box;
-
-  @media (max-width: 768px) {
-    position: fixed;
-    top: 70px;
-    bottom: 0;
-    left: 0;
-    z-index: 99;
-    transform: ${(props) => (props.$collapsed ? "translateX(-100%)" : "translateX(0)")};
-    width: 240px;
-  }
-`;
-
-const NavList = styled.ul`
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-`;
-
-const StyledNavLink = styled(NavLink)<{ $collapsed: boolean }>`
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  border-radius: 12px;
-  color: #004b87;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 15px;
-  white-space: nowrap;
-  transition: all 0.2s ease;
-  justify-content: ${(props) => (props.$collapsed ? "center" : "flex-start")};
-
-  &.active {
-    background-color: #bce7ef;
-    color: #004b87;
-  }
-
-  &:hover:not(.active) {
-    background-color: #f1f5f9;
-  }
-
-  svg {
-    font-size: 20px;
-    flex-shrink: 0;
-  }
-`;
-
-const LogoutButton = styled.button<{ $collapsed: boolean }>`
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  border: none;
-  background: transparent;
-  color: #dc2626;
-  font-weight: 600;
-  font-size: 15px;
-  cursor: pointer;
-  border-radius: 12px;
-  justify-content: ${(props) => (props.$collapsed ? "center" : "flex-start")};
-  width: 100%;
-  transition: background-color 0.2s ease;
-
-  &:hover {
-    background-color: #fee2e2;
-    color: #dc2626;
-  }
-
-  svg {
-    font-size: 20px;
-    flex-shrink: 0;
-  }
-`;
 
 interface SidebarProps {
   collapsed: boolean;
@@ -101,43 +8,55 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ collapsed, onLogout }) => {
+  const linkClass = ({ isActive }: { isActive: boolean }) =>
+    `sidebar-link nav-link d-flex align-items-center gap-2 px-3 py-2 mb-3 ${isActive ? "active" : ""} ${
+      collapsed ? "justify-content-center" : ""
+    }`;
+
   return (
-    <SidebarContainer $collapsed={collapsed}>
-      <NavList>
+    <aside
+      className="d-none d-md-flex bg-white border-end flex-column justify-content-between p-3"
+      style={{ position: "fixed", top: "70px", left: 0, height: "calc(100vh - 70px)", width: collapsed ? "80px" : "250px", transition: "width 0.3s ease", zIndex: 1000, overflowY: "auto" }}>
+      <ul className="nav flex-column gap-10">
         <li>
-          <StyledNavLink to="/dashboard" $collapsed={collapsed}>
-            <FiGrid />
+          <NavLink to="/dashboard" className={linkClass}>
+            <FiGrid size={20} />
             {!collapsed && <span>Dashboard</span>}
-          </StyledNavLink>
+          </NavLink>
         </li>
         <li>
-          <StyledNavLink to="/agendamentos" $collapsed={collapsed}>
-            <FiCalendar />
+          <NavLink to="/agendamentos" className={linkClass}>
+            <FiCalendar size={20} />
             {!collapsed && <span>Agendamentos</span>}
-          </StyledNavLink>
+          </NavLink>
         </li>
         <li>
-          <StyledNavLink to="/historico" $collapsed={collapsed}>
-            <FiBookOpen />
+          <NavLink to="/historico" className={linkClass}>
+            <FiBookOpen size={20} />
             {!collapsed && <span>Histórico de pacientes</span>}
-          </StyledNavLink>
+          </NavLink>
         </li>
         <li>
-          <StyledNavLink to="/medicos" $collapsed={collapsed}>
-            <FiUser />
+          <NavLink to="/em-construcao" className={linkClass}>
+            <FiUser size={20} />
             {!collapsed && <span>Médicos</span>}
-          </StyledNavLink>
+          </NavLink>
         </li>
-      </NavList>
+      </ul>
 
       <div>
         <hr className="text-secondary opacity-25 my-3" />
-        <LogoutButton $collapsed={collapsed} onClick={onLogout}>
-          <FiLogOut />
+        <button
+          onClick={onLogout}
+          className={`logout-link btn w-100 d-flex align-items-center gap-2 px-3 py-2 border-0 ${
+            collapsed ? "justify-content-center" : ""
+          }`}
+        >
+          <FiLogOut size={20} />
           {!collapsed && <span>Sair</span>}
-        </LogoutButton>
+        </button>
       </div>
-    </SidebarContainer>
+    </aside>
   );
 };
 

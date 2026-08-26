@@ -1,35 +1,12 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import { Outlet, useNavigate } from "react-router-dom";
 import Navbar from "./navbar";
 import Sidebar from "./sidebar";
 import { logout } from "../../hooks/useAuth";
 
-const LayoutWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  background-color: #f8fafc;
-`;
-
-const ContentBody = styled.div`
-  display: flex;
-  flex: 1;
-`;
-
-const MainContent = styled.main`
-  flex: 1;
-  padding: 24px;
-  overflow-y: auto;
-`;
-
 const MainLayout: React.FC = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const navigate = useNavigate();
-
-  const toggleSidebar = () => {
-    setSidebarCollapsed((prev) => !prev);
-  };
 
   const handleLogout = () => {
     logout();
@@ -37,17 +14,15 @@ const MainLayout: React.FC = () => {
   };
 
   return (
-    <LayoutWrapper>
-      <Navbar onToggleSidebar={toggleSidebar} />
-
-      <ContentBody>
+    <div className="d-flex flex-column min-vh-100" style={{ backgroundColor: "#f8fafc" }}>
+      <Navbar onToggleSidebar={() => setSidebarCollapsed((prev) => !prev)} />
+      <div className="d-flex flex-fill">
         <Sidebar collapsed={sidebarCollapsed} onLogout={handleLogout} />
-
-        <MainContent>
+        <main className="flex-fill p-4" style={{ overflowY: "auto" }}>
           <Outlet />
-        </MainContent>
-      </ContentBody>
-    </LayoutWrapper>
+        </main>
+      </div>
+    </div>
   );
 };
 
