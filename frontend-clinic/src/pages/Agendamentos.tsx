@@ -1,28 +1,23 @@
 import React, { useState, useMemo, useEffect, useRef } from "react";
-import { FiCalendar, FiMoreVertical, FiPlus, FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { FiCalendar, FiMoreVertical, FiPlus, FiChevronLeft, FiChevronRight, FiCheckCircle } from "react-icons/fi";
 import agendamentosMock from "../mocks/agendamentos";
 import medicosMock from "../mocks/medicos";
-import type { Agendamento, StatusAgendamento } from "../types/agendamento";
+import type { Agendamento } from "../types/agendamento";
 import type { NovoAgendamentoForm } from "../types/agendamentoForm";
 import { getDataISO } from "../utils/data";
 import ModalAgendamento from "../components/Agendamentos/ModalNovoAgendamento/layout";
 import ModalCancelar from "../components/Modals/ModalCancelarAtendimento";
 import ModalTransferir from "../components/Modals/ModalTransferirAgendamento";
 import ModalBloquearHorario from "../components/Modals/ModalBLoquearHorario";
-
-const statusClasses: Record<StatusAgendamento, string> = {
-  Confirmado: "bg-success bg-opacity-10 text-success",
-  Aguardando: "bg-warning bg-opacity-25 text-warning-emphasis",
-  Atendido: "bg-info bg-opacity-10 text-info-emphasis",
-  Cancelado: "bg-danger bg-opacity-10 text-danger",
-};
+import { getProximoStatus, getLabelAcaoRapida, statusBadgeClasses } from "../utils/statusAgendamento";
+import ModalAlterarStatus from "../components/Agendamentos/ModalAlterarStatus";
 
 export const AgendamentosPage: React.FC = () => {
   const [listaAgendamentos, setListaAgendamentos] = useState<Agendamento[]>(agendamentosMock);
   const [medicoFiltro, setMedicoFiltro] = useState<string>("TODOS");
   const [dataFiltro, setDataFiltro] = useState<string>(getDataISO(0));
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  
+
   const dropdownRef = useRef<HTMLDivElement>(null);
   const dateInputRef = useRef<HTMLInputElement>(null);
 
@@ -31,6 +26,7 @@ export const AgendamentosPage: React.FC = () => {
   const [agendamentoCancelar, setAgendamentoCancelar] = useState<Agendamento | null>(null);
   const [agendamentoTransferir, setAgendamentoTransferir] = useState<Agendamento | null>(null);
   const [agendamentoEditar, setAgendamentoEditar] = useState<Agendamento | null>(null);
+  const [agendamentoStatusEditar, setAgendamentoStatusEditar] = useState<Agendamento | null>(null);
 
   useEffect(() => {
     function handleClickFora(event: MouseEvent) {
@@ -152,10 +148,28 @@ export const AgendamentosPage: React.FC = () => {
     setIsNovoModalOpen(true);
   };
 
+  const handleAvancarStatus = (item: Agendamento) => {
+    const proximo = getProximoStatus(item.status);
+    if (!proximo) return;
+
+    setListaAgendamentos((prev) =>
+      prev.map((a) => (a.id === item.id ? { ...a, status: proximo } : a))
+    );
+  };
+
+  const handleAlterarStatusManual = (id: string, novoStatus: Agendamento["status"]) => {
+    setListaAgendamentos((prev) =>
+      prev.map((a) => (a.id === id ? { ...a, status: novoStatus } : a))
+    );
+    setAgendamentoStatusEditar(null);
+  };
+
   return (
     <div className="main-content container-fluid p-0 position-relative">
       <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
-        <h2 className="fs-8 fw-bold m-0" style={{ color: "#004b87" }}>Agenda de Consultas</h2>
+        <h2 className="fs-4 fw-bold m-0" style={{ color: "#004b87" }}>
+          Agenda de Consultas
+        </h2>
 
         <div className="d-flex flex-wrap align-items-center gap-2">
           <div className="btn-group bg-white rounded-3 border shadow-sm position-relative" style={{ height: "38px" }}>
@@ -275,9 +289,21 @@ export const AgendamentosPage: React.FC = () => {
                       {item.medicoNome}
                     </td>
                     <td>
-                      <span className={`badge rounded-pill fw-semibold px-3 py-2 ${statusClasses[item.status]}`}>
-                        {item.status}
-                      </span>
+                      <div className="d-flex align-items-center gap-2">
+                        <span className={`badge rounded-pill fw-semibold px-3 py-2 ${statusBadgeClasses[item.status]}`}>
+                          {item.status}
+                        </span>
+                        {getLabelAcaoRapida(item.status) && (
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-outline-success border-0 p-1 d-flex align-items-center"
+                            title={getLabelAcaoRapida(item.status) ?? ""}
+                            onClick={() => handleAvancarStatus(item)}
+                          >
+                            <FiCheckCircle size={16} />
+                          </button>
+                        )}
+                      </div>
                     </td>
                     <td className="text-end pe-3 position-relative" ref={activeDropdown === item.id ? dropdownRef : null}>
                       <button
@@ -382,6 +408,15 @@ export const AgendamentosPage: React.FC = () => {
             console.log("Bloqueio registrado:", dados);
             setIsBloquearModalOpen(false);
           }}
+        />
+      )}
+
+      {agendamentoStatusEditar && (
+        <ModalAlterarStatus
+          agendamento={agendamentoStatusEditar}
+          isOpen={!!agendamentoStatusEditar}
+          onClose={() => setAgendamentoStatusEditar(null)}
+          onSave={handleAlterarStatusManual}
         />
       )}
     </div>
