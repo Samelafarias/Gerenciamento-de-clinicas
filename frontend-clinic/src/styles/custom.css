@@ -100,5 +100,120 @@
     width: calc(100% - 250px); 
     margin-left: 250px;        
     padding: 1.5rem;          
+  }
 }
+
+/*Estilização da página de Agendamenrtos */
+/*Components modais*/
+.modal-step-indicador {
+  height: 6px;
+  background-color: #e2e8f0;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.modal-step-progress {
+  height: 80%;
+  background-color: var(--color-primary);
+  transition: width 0.3s ease;
+}
+
+.payment-option {
+  border: 1px solid #cdb5e1;
+  border-radius: 8px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.2 ease;
+  background-color: #fff;
+}
+
+.payment-option.active {
+  border-color: var(--color-accent);
+  background-color: #e6f7f8;
+  color: var(--color-primary-dark);
+}
+
+/*Página raiz de agendamentos*/
+.table-agenda {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table-agenda thead th {
+  background-color: #e2e8f0 !important;
+  color: #475569;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: none;
+}
+
+.avatar-circle-sm {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.dropdown-menu-acoes {
+  min-width: 190px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  padding: 8px 0;
+}
+
+.dropdown-menu-acoes .dropdown-header {
+  font-size: 12px;
+  font-weight: 700;
+  color: #1e293b;
+  padding: 4px 16px;
+}
+
+.dropdown-menu-acoes .dropdown-item {
+  font-size: 13px;
+  font-weight: 500;
+  color: #334155;
+  padding: 8px 16px;
+}
+
+.dropdown-menu-acoes .dropdown-item:hover {
+  background-color: #f1f5f9;
+}
+
+.badge-status-pill {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.badge-status-pill.confirmado {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.badge-status-pill.aguardando {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.badge-status-pill.atendido {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.badge-status-pill.livre {
+  background-color: #f1f5f9;
+  color: #64748b;
+  border: 1px dashed #cbd5e1;
 }

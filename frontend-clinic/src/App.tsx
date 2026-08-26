@@ -3,6 +3,7 @@ import EmConstrucao from './pages/EmConstrucao';
 import Login from './pages/Login';
 import MainLayout from "./components/Layout/mainlayout";
 import DashboardPage from './pages/Dashboard';
+import AgendamentosPage from './pages/Agendamentos';
 import PrivateRoute from './routes/PrivateRoute';
 
 function App() {
@@ -14,11 +15,8 @@ function App() {
 
       {/* Rotas Privadas dentro do MainLayout */}
       <Route element={<MainLayout />}>
-        <Route 
-          path="/dashboard" 
-          element={<PrivateRoute element={<DashboardPage />} />} 
-        />
-        {/* Futuras rotas com layout entram aqui (ex: agendamentos, medicos) */}
+        <Route path="/dashboard" element={<PrivateRoute element={<DashboardPage />} />} />
+        <Route path="/agendamentos" element={<PrivateRoute element={<AgendamentosPage />} />} />
       </Route>
     </Routes>
   );
