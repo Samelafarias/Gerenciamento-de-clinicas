@@ -24,10 +24,8 @@ const MainLayout: React.FC = () => {
 
   return (
     <div className="min-vh-100 bg-light">
-      {/* 1. Navbar no topo */}
       <Navbar onToggleSidebar={handleToggleSidebar} />
 
-      {/* 2. Sidebar Lateral (Fixa) */}
       <Sidebar
         collapsed={sidebarCollapsed}
         mobileOpen={mobileOpen}
@@ -35,7 +33,6 @@ const MainLayout: React.FC = () => {
         onLogout={handleLogout}
       />
 
-      {/* 3. Área Principal de Conteúdo */}
       <main
         style={{
           paddingTop: "70px",

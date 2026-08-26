@@ -25,7 +25,6 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, mobileOpen, onCloseMobile,
 
   return (
     <>
-      {/* Fundo escuro cobrindo 100% da tela no Mobile */}
       {mobileOpen && (
         <div
           className="d-md-none position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50"
@@ -41,7 +40,6 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, mobileOpen, onCloseMobile,
         }`}
         style={{
           position: "fixed",
-          /* No mobile vai do topo até o fim da tela. No Desktop fica abaixo da Navbar (70px) */
           top: isMobile ? 0 : "70px",
           left: 0,
           bottom: 0,
@@ -53,7 +51,6 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, mobileOpen, onCloseMobile,
         }}
       >
         <div>
-          {/* Cabeçalho exclusivo para Mobile com botão de fechar */}
           {isMobile && (
             <div className="d-flex align-items-center justify-content-between pb-3 mb-3 border-bottom">
               <span className="fw-bold text-primary-custom fs-5">Menu</span>
