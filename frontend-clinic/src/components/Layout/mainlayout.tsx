@@ -6,6 +6,7 @@ import { logout } from "../../hooks/useAuth";
 
 const MainLayout: React.FC = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -13,15 +14,40 @@ const MainLayout: React.FC = () => {
     navigate("/", { replace: true });
   };
 
+  const handleToggleSidebar = () => {
+    if (window.innerWidth < 768) {
+      setMobileOpen((prev) => !prev);
+    } else {
+      setSidebarCollapsed((prev) => !prev);
+    }
+  };
+
   return (
-    <div className="d-flex flex-column min-vh-100" style={{ backgroundColor: "#f8fafc" }}>
-      <Navbar onToggleSidebar={() => setSidebarCollapsed((prev) => !prev)} />
-      <div className="d-flex flex-fill">
-        <Sidebar collapsed={sidebarCollapsed} onLogout={handleLogout} />
-        <main className="flex-fill p-4" style={{ overflowY: "auto" }}>
-          <Outlet />
-        </main>
-      </div>
+    <div className="min-vh-100 bg-light">
+      {/* 1. Navbar no topo */}
+      <Navbar onToggleSidebar={handleToggleSidebar} />
+
+      {/* 2. Sidebar Lateral (Fixa) */}
+      <Sidebar
+        collapsed={sidebarCollapsed}
+        mobileOpen={mobileOpen}
+        onCloseMobile={() => setMobileOpen(false)}
+        onLogout={handleLogout}
+      />
+
+      {/* 3. Área Principal de Conteúdo */}
+      <main
+        style={{
+          paddingTop: "70px",
+          paddingLeft: window.innerWidth >= 768 ? (sidebarCollapsed ? "80px" : "250px") : "0px",
+          transition: "padding-left 0.3s ease",
+          minHeight: "100vh",
+          boxSizing: "border-box",
+        }}
+        className="p-3 p-md-4"
+      >
+        <Outlet />
+      </main>
     </div>
   );
 };

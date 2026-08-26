@@ -48,20 +48,6 @@
 }
 
 /* Estilização do componet SIDEBAR */
-.sidebar-container {
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: 260px;
-  overflow-y: auto;
-  z-index: 1000;
-}
-
-.main-content {
-  margin-left: 260px;
-  min-height: 100vh;
-}
-
 .sidebar-link {
   color: var(--color-primary);
   font-weight: 600;
@@ -89,17 +75,23 @@
 
 /*Estilização do Dashboard*/
 .main-content {
-  width: 100%;             
-  margin-left: 0;          
-  padding: 1rem;          
+  width: 100%;
+  margin-left: 0;
+  padding: 1rem;
   box-sizing: border-box;
+  transition: margin-left 0.3s ease, width 0.3s ease;
 }
 
 @media (min-width: 768px) {
   .main-content {
-    width: calc(100% - 250px); 
-    margin-left: 250px;        
-    padding: 1.5rem;          
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    padding: 1.5rem;
+  }
+
+  .main-content.sidebar-collapsed {
+    margin-left: 80px;
+    width: calc(100% - 80px);
   }
 }
 
@@ -123,7 +115,7 @@
   border-radius: 8px;
   padding: 12px;
   cursor: pointer;
-  transition: all 0.2 ease;
+  transition: all 0.2s ease;
   background-color: #fff;
 }
 
@@ -225,13 +217,13 @@
 }
 
 .form-control:focus,
-.form-selct:focus {
+.form-select:focus {
   border-color: #004b87;
   box-shadow: 0 0 0 0.25rem rgba(0, 75, 135, 0.015);
 }
 
 @keyframes slideInRight {
-  form {
+  from {
     transform: translateX(100%);
     opacity: 0;
   }
@@ -239,14 +231,15 @@
     transform: translateX(0);
     opacity: 1;
   }
+}
 
 .toast-notificacao {
-    animation: slideInRight 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
-    z-index: 1090;
-    min-width: 320px;
-  }
+  animation: slideInRight 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+  z-index: 1090;
+  min-width: 320px;
+}
 
-modal-body-scroll {
+.modal-body-scroll {
   max-height: 60vh;
   overflow-y: auto;
 }
