@@ -1,187 +1,9 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../assets/Logo.png";
 import { FiUser } from "react-icons/fi";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 import { autenticar, getUsuarioLogado } from "../hooks/useAuth";
-
-const LoginContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100dvh;
-  width: 100%;
-  background-color: #004b87;
-  padding: 24px 16px;
-  box-sizing: border-box;
-`;
-
-const CardForm = styled.div`
-  background-color: #f8fafc;
-  width: 100%;
-  max-width: 440px;
-  padding: 40px 32px;
-  border-radius: 20px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  @media (max-width: 480px) {
-    padding: 32px 20px;
-  }
-`;
-
-const LogoImage = styled.div`
-  margin-bottom: 20px;
-  display: flex;
-  justify-content: center;
-
-  img {
-    height: 55px;
-    object-fit: contain;
-  }
-`;
-
-const Title = styled.h2`
-  color: #003366;
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin: 0 0 28px 0;
-  text-align: center;
-`;
-
-const Form = styled.form`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-`;
-
-const FormGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-`;
-
-const Label = styled.label`
-  color: #003366;
-  font-size: 14px;
-  font-weight: 700;
-  margin-bottom: 8px;
-`;
-
-const InputWrapper = styled.div`
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 100%;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  padding: 14px 42px 14px 16px;
-  border: none;
-  border-radius: 10px;
-  background-color: #e5e7eb;
-  color: #333;
-  font-size: 15px;
-  box-sizing: border-box;
-  outline: none;
-
-  &::placeholder {
-    color: #9ca3af;
-  }
-
-  &:focus {
-    background-color: #e2e8f0;
-    box-shadow: 0 0 0 2px #004b87;
-  }
-`;
-
-const IconInside = styled.span`
-  position: absolute;
-  right: 14px;
-  color: #6b7280;
-  display: flex;
-  align-items: center;
-  pointer-events: none;
-`;
-
-// Botão clicável para alternar a senha
-const TogglePasswordButton = styled.button`
-  position: absolute;
-  right: 12px;
-  background: none;
-  border: none;
-  color: #6b7280;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 4px;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: color 0.2s ease;
-
-  &:hover {
-    color: #004b87;
-  }
-
-  &:focus {
-    outline: none;
-  }
-`;
-
-const ForgotPasswordLink = styled(Link)`
-  align-self: flex-end;
-  color: #00a3ad;
-  font-size: 13px;
-  font-weight: 600;
-  text-decoration: underline;
-  margin-top: -4px;
-  margin-bottom: 8px;
-
-  &:hover {
-    color: #00828a;
-  }
-`;
-
-const SubmitButton = styled.button`
-  width: 60%;
-  align-self: center;
-  padding: 12px;
-  background-color: #004b87;
-  color: #ffffff;
-  border: none;
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.2s ease, transform 0.1s ease;
-
-  &:hover {
-    background-color: #003366;
-    transform: translateY(-1px);
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-
-  @media (max-width: 480px) {
-    width: 100%;
-  }
-`;
-
-const ErrorMessage = styled.span`
-  color: #d92d20;
-  font-size: 13px;
-  font-weight: 600;
-  margin-top: -6px;
-`;
 
 const Login = () => {
   const navigate = useNavigate();
@@ -191,14 +13,18 @@ const Login = () => {
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
 
-  const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev);
-  };
+  useEffect(() => {
+    if (getUsuarioLogado()) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, [navigate]);
+
+  const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
-    if (erro) setErro(""); // limpa erro ao digitar de novo
+    if (erro) setErro("");
   };
 
   const handleSubmit = (e) => {
@@ -212,7 +38,6 @@ const Login = () => {
 
     setCarregando(true);
 
-    // Simula um pequeno delay de requisição, pra dar sensação de "chamada real"
     setTimeout(() => {
       const resultado = autenticar(form.email, form.senha);
 
@@ -226,76 +51,95 @@ const Login = () => {
     }, 600);
   };
 
-useEffect(() => {
-  if (getUsuarioLogado()) {
-    navigate("/dashboard", { replace: true });
-  }
-}, [navigate]);
-
   return (
-    <LoginContainer>
-      <CardForm>
-        <LogoImage>
-          <img src={Logo} alt="Logo da Clínica Mais Saúde" />
-        </LogoImage>
+    <div className="d-flex align-items-center justify-content-center min-vh-100 bg-primary-custom p-3">
+      <div
+        className="bg-light rounded-4 shadow p-4 p-sm-5 w-100"
+        style={{ maxWidth: "440px" }}
+      >
+        <div className="d-flex justify-content-center mb-4">
+          <img src={Logo} alt="Logo da Clínica Mais Saúde" style={{ height: "55px", objectFit: "contain" }} />
+        </div>
 
-        <Title>Login Administrativo</Title>
+        <h2 className="text-primary-custom fw-bold text-center mb-4 fs-4">
+          Login Administrativo
+        </h2>
 
-        <Form id="loginForm" onSubmit={handleSubmit} noValidate>
-          <FormGroup>
-            <Label htmlFor="email">Email:</Label>
-            <InputWrapper>
-              <Input
+        <form onSubmit={handleSubmit} noValidate>
+          <div className="mb-3 text-start">
+            <label htmlFor="email" className="form-label text-primary-custom fw-bold small">
+              Email:
+            </label>
+            <div className="position-relative">
+              <input
                 type="email"
                 id="email"
                 name="email"
+                className="form-control input-bg-custom rounded-3 py-2 pe-5"
                 placeholder="exemplo@email.com"
                 maxLength={80}
                 value={form.email}
                 onChange={handleChange}
                 required
               />
-              <IconInside>
-                <FiUser size={18} />
-              </IconInside>
-            </InputWrapper>
-          </FormGroup>
+              <FiUser
+                size={18}
+                className="position-absolute top-50 end-0 translate-middle-y me-3 text-secondary"
+              />
+            </div>
+          </div>
 
-          <FormGroup>
-            <Label htmlFor="senha">Senha:</Label>
-            <InputWrapper>
-              <Input
+          <div className="mb-2 text-start">
+            <label htmlFor="senha" className="form-label text-primary-custom fw-bold small">
+              Senha:
+            </label>
+            <div className="position-relative">
+              <input
                 type={showPassword ? "text" : "password"}
                 id="senha"
                 name="senha"
+                className="form-control input-bg-custom rounded-3 py-2 pe-5"
                 placeholder="******"
                 maxLength={50}
                 value={form.senha}
                 onChange={handleChange}
                 required
               />
-              <TogglePasswordButton
+              <button
                 type="button"
                 onClick={togglePasswordVisibility}
                 title={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                className="btn position-absolute top-50 end-0 translate-middle-y me-1 text-secondary p-1 border-0"
               >
                 {showPassword ? <IoEyeOff size={20} /> : <IoEye size={20} />}
-              </TogglePasswordButton>
-            </InputWrapper>
-          </FormGroup>
+              </button>
+            </div>
+          </div>
 
-          {erro && <ErrorMessage role="alert">{erro}</ErrorMessage>}
+          {erro && (
+            <div className="text-danger small fw-semibold mb-2" role="alert">
+              {erro}
+            </div>
+          )}
 
-          <ForgotPasswordLink to="/em-construcao">
-            Esqueceu sua senha?
-          </ForgotPasswordLink>
+          <div className="text-end mb-3">
+            <Link to="/em-construcao" className="link-accent small text-decoration-underline">
+              Esqueceu sua senha?
+            </Link>
+          </div>
 
-          <SubmitButton type="submit" disabled={carregando}>
-            {carregando ? "Entrando..." : "Fazer Login"}
-          </SubmitButton>
-        </Form>
-      </CardForm>
-    </LoginContainer>
+          <div className="text-center">
+            <button
+              type="submit"
+              disabled={carregando}
+              className="btn btn-primary-custom rounded-3 fw-semibold px-4 py-2 w-50 w-sm-auto"
+            >
+              {carregando ? "Entrando..." : "Fazer Login"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 };
 
