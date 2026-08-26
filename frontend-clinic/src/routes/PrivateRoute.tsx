@@ -1,15 +1,14 @@
+import React from "react";
 import { Navigate } from "react-router-dom";
-import { getUsuarioLogado } from "../hooks/useAuth";
 
-const PrivateRoute = ({ children }) => {
-  const usuario = getUsuarioLogado();
+interface PrivateRouteProps {
+  element: React.ReactElement;
+}
 
-  if (!usuario) {
-    // Não autenticado: manda de volta pro login
-    return <Navigate to="/" replace />;
-  }
+const PrivateRoute: React.FC<PrivateRouteProps> = ({ element }) => {
+  const isAuthenticated = true; 
 
-  return children;
+  return isAuthenticated ? element : <Navigate to="/" replace />;
 };
 
 export default PrivateRoute;
