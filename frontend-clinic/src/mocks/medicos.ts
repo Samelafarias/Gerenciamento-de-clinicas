@@ -1,5 +1,3 @@
-import type { Medico } from '../types/agendamento';
-
 export interface MedicoComValor {
   id: string;
   nome: string;

@@ -7,6 +7,7 @@ import type { StatusAgendamento } from "../../types/agendamento";
 const statusClasses: Record<StatusAgendamento, string> = {
   Confirmado: "bg-success bg-opacity-10 text-success",
   Aguardando: "bg-warning bg-opacity-25 text-warning-emphasis",
+  "Em Atendimento": "bg-info bg-opacity-10 text-info-emphasis",
   Atendido: "bg-info bg-opacity-10 text-info-emphasis",
   Cancelado: "bg-danger bg-opacity-10 text-danger",
 };

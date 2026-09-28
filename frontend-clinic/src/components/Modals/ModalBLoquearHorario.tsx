@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import type { BloqueioHorario } from "../types/agendamento";
 
 interface ModalBloquearHorarioProps {
   isOpen: boolean;

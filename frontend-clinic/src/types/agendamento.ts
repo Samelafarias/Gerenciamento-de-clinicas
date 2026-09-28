@@ -1,4 +1,4 @@
-export type StatusAgendamento = "Confirmado" | "Aguardando" | "Atendido" | "Cancelado";
+export type StatusAgendamento = "Confirmado" | "Aguardando" | "Em Atendimento" | "Atendido" | "Cancelado";
 export type TipoConsulta = "Primeira Consulta" | "Retorno" | "Exame";
 
 export interface Agendamento {

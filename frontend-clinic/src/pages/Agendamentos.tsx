@@ -18,7 +18,7 @@ export const AgendamentosPage: React.FC = () => {
   const [dataFiltro, setDataFiltro] = useState<string>(getDataISO(0));
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLTableCellElement>(null);
   const dateInputRef = useRef<HTMLInputElement>(null);
 
   const [isNovoModalOpen, setIsNovoModalOpen] = useState(false);

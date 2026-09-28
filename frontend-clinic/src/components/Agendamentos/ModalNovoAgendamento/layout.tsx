@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Passo01DadosPessoais from "./passo01";
 import Passo02Endereco from "./passo02";
 import Passo03ConsultaPagamento from "./passo03";
-import medicosList from "../../../mocks/medicos";
+import type { MedicoComValor } from "../../../mocks/medicos";
 import { formDataInicial, type NovoAgendamentoForm } from "../../../types/agendamentoForm";
 import { validarPasso1, validarPasso2, validarPasso3 } from "../../../utils/validadores";
 import type { Agendamento } from "../../../types/agendamento";
@@ -10,6 +10,7 @@ import type { Agendamento } from "../../../types/agendamento";
 interface ModalAgendamentoProps {
   isOpen: boolean;
   initialData?: Agendamento | null;
+  medicosList: MedicoComValor[];
   onClose: () => void;
   onSave: (dadosCompletos: NovoAgendamentoForm) => void;
 }
@@ -17,6 +18,7 @@ interface ModalAgendamentoProps {
 export const ModalAgendamento: React.FC<ModalAgendamentoProps> = ({
   isOpen,
   initialData,
+  medicosList,
   onClose,
   onSave,
 }) => {

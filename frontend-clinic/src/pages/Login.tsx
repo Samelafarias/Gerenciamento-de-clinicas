@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, type ChangeEvent, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../assets/Logo.png";
 import { FiUser } from "react-icons/fi";
@@ -21,13 +21,13 @@ const Login = () => {
 
   const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
     if (erro) setErro("");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErro("");
 
@@ -42,7 +42,7 @@ const Login = () => {
       const resultado = autenticar(form.email, form.senha);
 
       if (!resultado.sucesso) {
-        setErro(resultado.mensagem);
+        setErro(resultado.mensagem ?? "");
         setCarregando(false);
         return;
       }

@@ -1,22 +1,42 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
 import { usuarios } from "../mocks/usuarios";
 
-const AuthContext = createContext();
+interface Usuario {
+  id: number;
+  nome: string;
+  email: string;
+  cargo: string;
+}
 
-export function AuthProvider({ children }) {
-  const [usuario, setUsuario] = useState(null);
+interface ResultadoLogin {
+  sucesso: boolean;
+  mensagem?: string;
+}
+
+interface AuthContextData {
+  usuario: Usuario | null;
+  login: (email: string, senha: string) => ResultadoLogin;
+  logout: () => void;
+  autenticado: boolean;
+  carregando: boolean;
+}
+
+const AuthContext = createContext<AuthContextData | undefined>(undefined);
+
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [usuario, setUsuario] = useState<Usuario | null>(null);
   const [carregando, setCarregando] = useState(true);
 
   // Recupera sessão salva ao recarregar a página
   useEffect(() => {
     const usuarioSalvo = localStorage.getItem("usuarioLogado");
     if (usuarioSalvo) {
-      setUsuario(JSON.parse(usuarioSalvo));
+      setUsuario(JSON.parse(usuarioSalvo) as Usuario);
     }
     setCarregando(false);
   }, []);
 
-  function login(email, senha) {
+  function login(email: string, senha: string): ResultadoLogin {
     const usuarioEncontrado = usuarios.find(
       (u) => u.email === email && u.senha === senha
     );
@@ -49,5 +69,9 @@ export function AuthProvider({ children }) {
 }
 
 export function useAuth() {
-  return useContext(AuthContext);
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth deve ser usado dentro de AuthProvider.");
+  }
+  return context;
 }

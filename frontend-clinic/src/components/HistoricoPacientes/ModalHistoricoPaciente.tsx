@@ -1,5 +1,5 @@
 import React from "react";
-import { FiX, FiUser, FiCalendar, FiDollarSign } from "react-icons/fi";
+import { FiUser } from "react-icons/fi";
 import type { Agendamento } from "../../types/agendamento";
 
 interface Props {
